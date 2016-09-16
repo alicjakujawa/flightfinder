@@ -15,7 +15,7 @@ class FormSelect extends Component {
           componentClass="select"
           value={this.props.value}
           onChange={this.props.handleChange}
-          name="destination"
+          name={this.props.name}
         >
           <option value="">{this.props.placeholder}</option>
           {this.props.options ? this.props.options.map((option, i) =>
@@ -33,6 +33,7 @@ FormSelect.propTypes = {
   placeholder: PropTypes.string.isRequired,
   handleChange: PropTypes.func.isRequired,
   options: PropTypes.array.isRequired,
+  name: PropTypes.string.isRequired,
 };
 
 export default FormSelect;

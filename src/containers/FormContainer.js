@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
+import _ from 'lodash';
 
 import * as actionCreators from '../actions/FlightActions';
 import FormSelect from '../components/FormSelect';
@@ -22,12 +23,15 @@ class FormContainer extends Component {
       destination: '',
       startDate: '',
       endDate: '',
+      errors: [],
+      showErrors: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleStartDate = this.handleStartDate.bind(this);
     this.handleEndDate = this.handleEndDate.bind(this);
     this.search = this.search.bind(this);
+    this.validate = this.validate.bind(this);
   }
 
   componentWillMount() {
@@ -57,12 +61,49 @@ class FormContainer extends Component {
       endDate: moment(this.state.endDate).format('YYYY-MM-DD'),
     };
 
-    this.props.actions.searchFlight(flight);
-    this.clearForm();
+    if (this.validate(flight)) {
+      this.props.actions.searchFlight(flight);
+      this.clearForm();
+    } else {
+      this.setState({ showErrors: true });
+    }
   }
 
   clearForm() {
-    this.setState({ origin: '', destination: '', startDate: '', endDate: '' });
+    this.setState({
+      origin: '',
+      destination: '',
+      startDate: '',
+      endDate: '',
+      showErrors: false,
+      errors: [],
+    });
+  }
+
+  validate(flight) {
+    this.setState({ errors: [] });
+
+    const notEmptyValues = _.every(flight, (prop) => {
+      return prop !== '' && prop !== 'Invalid date';
+    });
+
+    if (!notEmptyValues) {
+      const errors = this.state.errors.length ?
+        this.state.errors.push('Fill all the fields') : ['Fill all the fields'];
+      this.setState({ errors });
+      return false;
+    }
+
+    const invalidDateRange = flight.endDate < flight.startDate;
+
+    if (invalidDateRange) {
+      const errors = this.state.errors.length ?
+        this.state.errors.push('Departure date must be before fly back date') :
+        ['Departure date must be before fly back date'];
+      this.setState({ errors });
+      return false;
+    }
+    return true;
   }
 
   render() {
@@ -72,6 +113,7 @@ class FormContainer extends Component {
           <FormSelect
             label="Select origin"
             value={this.state.origin}
+            name="origin"
             handleChange={this.handleChange}
             placeholder="Select origin..."
             options={this.props.airports}
@@ -79,6 +121,7 @@ class FormContainer extends Component {
           <FormSelect
             label="Select destination"
             value={this.state.destination}
+            name="destination"
             handleChange={this.handleChange}
             placeholder="Select destination..."
             options={this.props.airports}
