@@ -21,7 +21,7 @@ export default function flight(state = initialState, action) {
     case FLIGHT.REQUEST_FAILURE:
       return {
         ...state,
-        error: action.error,
+        error: action.error.response.statusText,
       };
 
     default:

@@ -108,6 +108,9 @@ class FormContainer extends Component {
         {this.state.showErrors ?
           <ErrorMessage message={this.state.error} />
         : null}
+        {this.props.error ?
+          <ErrorMessage message={this.props.error} />
+        : null}
         <form onSubmit={this.search}>
           <FormSelect
             label="Select origin"
@@ -153,10 +156,12 @@ class FormContainer extends Component {
 FormContainer.propTypes = {
   airports: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired,
+  error: PropTypes.string,
 };
 
 const mapStateToProps = (state) => ({
   airports: state.flights.airports,
+  error: state.flights.error,
 });
 
 const mapDispatchToProps = (dispatch) => ({
