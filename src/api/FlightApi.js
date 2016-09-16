@@ -6,9 +6,10 @@ export default {
   getCodes() {
     return axios.get(`${FLIGHT_URL}forms/flight-booking-selector/`);
   },
-
+/* eslint-disable */
   searchFlight(flight) {
     const DATA = `from/${flight.origin}/to/${flight.destination}/${flight.startDate}/${flight.endDate}/`;
     return axios.get(`${FLIGHT_URL}flights/${DATA}250/unique/?limit=15&offset-0`);
   },
+/* eslint-enable */
 };
