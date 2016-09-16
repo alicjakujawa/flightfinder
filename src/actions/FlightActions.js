@@ -29,6 +29,9 @@ export function searchFlight(flight) {
     FlightApi.searchFlight(flight)
       .then((response) => {
         dispatch(receiveFlight(response.data));
+      })
+      .catch((error) => {
+        dispatch({ type: FLIGHT.REQUEST_FAILURE, error });
       });
   };
 }
