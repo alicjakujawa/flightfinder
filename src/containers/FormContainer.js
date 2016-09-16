@@ -1,15 +1,16 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import moment from 'moment';
 
 import * as actionCreators from '../actions/FlightActions';
+import FormSelect from '../components/FormSelect';
 
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
-import FormControl from 'react-bootstrap/lib/FormControl';
 import DatePicker from 'react-bootstrap-date-picker';
 import Button from 'react-bootstrap/lib/Button';
-import moment from 'moment';
+
 
 class FormContainer extends Component {
 
@@ -68,34 +69,20 @@ class FormContainer extends Component {
     return (
       <div className="wrapper">
         <form onSubmit={this.search}>
-          <FormGroup controlId="formControlsSelect">
-            <ControlLabel>Select origin</ControlLabel>
-            <FormControl
-              componentClass="select"
-              value={this.state.origin}
-              onChange={this.handleChange}
-              name="origin"
-            >
-              <option value="">Select origin...</option>
-              {this.props.airports ? this.props.airports.map((airport, i) =>
-                <option key={i} value={airport.iataCode}>{airport.name}</option>
-                ) : null}
-            </FormControl>
-          </FormGroup>
-          <FormGroup controlId="formControlsSelect">
-            <ControlLabel>Select destination</ControlLabel>
-            <FormControl
-              componentClass="select"
-              value={this.state.destination}
-              onChange={this.handleChange}
-              name="destination"
-            >
-              <option value="">Select destination...</option>
-              {this.props.airports ? this.props.airports.map((airport, i) =>
-                <option key={i} value={airport.iataCode}>{airport.name}</option>
-                ) : null}
-            </FormControl>
-          </FormGroup>
+          <FormSelect
+            label="Select origin"
+            value={this.state.origin}
+            handleChange={this.handleChange}
+            placeholder="Select origin..."
+            options={this.props.airports}
+          />
+          <FormSelect
+            label="Select destination"
+            value={this.state.destination}
+            handleChange={this.handleChange}
+            placeholder="Select destination..."
+            options={this.props.airports}
+          />
           <FormGroup>
             <ControlLabel>Departure date</ControlLabel>
             <DatePicker
