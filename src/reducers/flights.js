@@ -15,7 +15,7 @@ export default function flight(state = initialState, action) {
     case FLIGHT.FLIGHT_RECEIVED:
       return {
         ...state,
-        result: action.flight,
+        results: action.flight,
       };
 
     case FLIGHT.REQUEST_FAILURE:

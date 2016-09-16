@@ -6,6 +6,7 @@ import _ from 'lodash';
 
 import * as actionCreators from '../actions/FlightActions';
 import FormSelect from '../components/FormSelect';
+import ErrorMessage from '../components/ErrorMessage';
 
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
@@ -76,7 +77,7 @@ class FormContainer extends Component {
       startDate: '',
       endDate: '',
       showErrors: false,
-      errors: [],
+      error: '',
     });
   }
 
@@ -88,19 +89,14 @@ class FormContainer extends Component {
     });
 
     if (!notEmptyValues) {
-      const errors = this.state.errors.length ?
-        this.state.errors.push('Fill all the fields') : ['Fill all the fields'];
-      this.setState({ errors });
+      this.setState({ error: 'Fill all the fields' });
       return false;
     }
 
     const invalidDateRange = flight.endDate < flight.startDate;
 
     if (invalidDateRange) {
-      const errors = this.state.errors.length ?
-        this.state.errors.push('Departure date must be before fly back date') :
-        ['Departure date must be before fly back date'];
-      this.setState({ errors });
+      this.setState({ error: 'Departure date must be before fly back date' });
       return false;
     }
     return true;
@@ -109,6 +105,9 @@ class FormContainer extends Component {
   render() {
     return (
       <div className="wrapper">
+        {this.state.showErrors ?
+          <ErrorMessage message={this.state.error} />
+        : null}
         <form onSubmit={this.search}>
           <FormSelect
             label="Select origin"

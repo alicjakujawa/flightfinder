@@ -8,7 +8,9 @@ export default {
   },
 
   searchFlight(flight) {
-    const DATA = `from/${flight.origin}/to/${flight.destination}/${flight.startDate}/${flight.endDate}/`;
+    const DATA = `
+      from/${flight.origin}/to/${flight.destination}/${flight.startDate}/${flight.endDate}/
+    `;
     return axios.get(`${FLIGHT_URL}flights/${DATA}250/unique/?limit=15&offset-0`);
   },
 };

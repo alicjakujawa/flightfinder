@@ -16,6 +16,7 @@
   "rules": {
     "react/prefer-stateless-function": 0,
     "babel/new-cap": 0,
+    "arrow-body-style": 0
   },
   "parserOptions": {
     "ecmaVersion": 6,
